@@ -99,6 +99,44 @@ async function handleGetRecommendations(artist, track) {
   }
 }
 
+async function handleDownload(button, artist, track) {
+  const originalText = button.textContent.trim();
+  button.textContent = "Downloading...";
+  button.disabled = true;
+
+  try {
+    const url = `${API_BASE}/api/download?artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(track)}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error || "Failed to download");
+    }
+
+    const blob = await response.blob();
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    
+    // Sanitize filename for client side
+    let safeTitle = `${track} - ${artist}`;
+    for (const char of ['<', '>', ':', '"', '/', '\\', '|', '?', '*']) {
+      safeTitle = safeTitle.replaceAll(char, '');
+    }
+    a.download = `${safeTitle}.mp3`;
+    
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(downloadUrl);
+  } catch (err) {
+    alert(`Failed to download MP3: ${err.message || "Please check if the backend is running."}`);
+    console.error(err);
+  } finally {
+    button.textContent = originalText;
+    button.disabled = false;
+  }
+}
+
 function renderRecommendations(tracks) {
   recommendResults.innerHTML = "";
 
@@ -127,8 +165,17 @@ function renderRecommendations(tracks) {
         <a href="${youtubeSearchUrl}" target="_blank" rel="noopener noreferrer">
           Play on YouTube
         </a>
+        <button class="download-btn">
+          Download MP3
+        </button>
       </div>
     `;
+
+    const downloadBtn = card.querySelector(".download-btn");
+    downloadBtn.addEventListener("click", () => {
+      handleDownload(downloadBtn, track.artist, track.title);
+    });
+
     recommendResults.appendChild(card);
   });
 

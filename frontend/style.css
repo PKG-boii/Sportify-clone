@@ -279,6 +279,25 @@ header {
   background: rgba(240, 174, 76, 0.08);
 }
 
+.card button.download-btn {
+  border-color: var(--signal);
+  color: var(--signal);
+}
+
+.card button.download-btn:hover {
+  background: rgba(95, 224, 210, 0.08);
+  border-color: var(--signal);
+  color: var(--signal);
+}
+
+.card button.download-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: var(--border);
+  color: var(--text-muted);
+  background: transparent;
+}
+
 .hidden {
   display: none;
 }
