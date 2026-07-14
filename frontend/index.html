@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sonar — Music Recommender</title>
+  <title>Sonar — Advanced AI Music Recommender & Signal Tracker</title>
+  <meta name="description"
+    content="Sonar is a premium music recommendation system that reads your acoustic signals to fetch recommendations, play on YouTube, and download high-quality MP3s." />
+  <meta name="keywords"
+    content="Sonar, music recommender, similarity algorithm, download mp3, youtube mp3 downloader, spotify clone, acoustic search" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
   <canvas id="bg-canvas"></canvas>
@@ -18,8 +26,8 @@
       <div class="wordmark">
         <span class="wordmark-text">Sonar</span>
         <svg class="wordmark-wave" viewBox="0 0 120 16" preserveAspectRatio="none">
-          <polyline points="0,8 8,8 12,2 16,14 20,4 24,12 28,8 36,8 40,3 44,13 48,8 120,8"
-                    fill="none" stroke="currentColor" stroke-width="1.5" />
+          <polyline points="0,8 8,8 12,2 16,14 20,4 24,12 28,8 36,8 40,3 44,13 48,8 120,8" fill="none"
+            stroke="currentColor" stroke-width="1.5" />
         </svg>
       </div>
       <p class="tagline">Type a track. Read the signal.</p>
@@ -41,7 +49,11 @@
     </section>
   </div>
 
+  <!-- Global Status / Download Notification Toast Container -->
+  <div id="status-toast-container" class="status-toast-container"></div>
+
   <script src="background.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>
