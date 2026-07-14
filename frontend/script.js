@@ -166,6 +166,7 @@ async function handleGetRecommendations(artist, track) {
 
       setTimeout(() => {
         renderRecommendations(recommendations);
+        recommendSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         window.dispatchEvent(new CustomEvent('sonar-activity-end', { detail: { type: 'recommend' } }));
       }, 750);
     });
