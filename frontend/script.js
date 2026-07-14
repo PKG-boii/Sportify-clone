@@ -123,6 +123,8 @@ async function handleGetRecommendations(artist, track) {
   recommendSection.classList.remove("hidden");
   setTimeout(() => {
     recommendSection.classList.add("show");
+    // Scroll immediately to the recommendations container so they see the loading animation!
+    recommendSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 50);
 
   recommendHeading.textContent = `Because you liked "${track}" by ${artist}`;
@@ -166,7 +168,6 @@ async function handleGetRecommendations(artist, track) {
 
       setTimeout(() => {
         renderRecommendations(recommendations);
-        recommendSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
         window.dispatchEvent(new CustomEvent('sonar-activity-end', { detail: { type: 'recommend' } }));
       }, 750);
     });
