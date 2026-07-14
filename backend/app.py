@@ -3,14 +3,20 @@ app.py — HTTP layer. Thin on purpose: routes just call lastfm_client
 functions and return JSON. No business logic lives here.
 """
 
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, send_from_directory
 from flask_cors import CORS
 import io
+import os
 import lastfm_client
 import youtube_downloader
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../frontend", static_url_path="")
 CORS(app)
+
+
+@app.route("/")
+def index():
+    return send_from_directory(app.static_folder, "index.html")
 
 
 @app.route("/api/search")
