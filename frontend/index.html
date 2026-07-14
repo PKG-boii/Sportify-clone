@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sonar — Music Recommender</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app">
+    <header>
+      <div class="wordmark">
+        <span class="wordmark-text">Sonar</span>
+        <svg class="wordmark-wave" viewBox="0 0 120 16" preserveAspectRatio="none">
+          <polyline points="0,8 8,8 12,2 16,14 20,4 24,12 28,8 36,8 40,3 44,13 48,8 120,8"
+                    fill="none" stroke="currentColor" stroke-width="1.5" />
+        </svg>
+      </div>
+      <p class="tagline">Type a track. Read the signal.</p>
+    </header>
+
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search for a song..." autocomplete="off" />
+      <button id="search-btn">Search</button>
+    </div>
+
+    <section id="search-results" class="card-grid"></section>
+
+    <section id="recommendations-section" class="hidden">
+      <div class="section-label">
+        <span class="section-eyebrow">Nearby signals</span>
+        <h2 id="recommend-heading"></h2>
+      </div>
+      <div id="recommend-results" class="card-grid"></div>
+    </section>
+  </div>
+
+  <script src="background.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
