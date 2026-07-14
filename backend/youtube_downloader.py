@@ -31,6 +31,14 @@ def download_audio_as_mp3(artist: str, track: str) -> tuple[bytes, str]:
         'no_warnings': True,
     }
     
+    # Bypass YouTube bot detection by using Netscape format cookies from environment
+    cookies_content = os.environ.get("YOUTUBE_COOKIES", "").strip()
+    if cookies_content:
+        cookies_path = os.path.join(temp_dir, f"{unique_id}_cookies.txt")
+        with open(cookies_path, 'w', encoding='utf-8') as cf:
+            cf.write(cookies_content)
+        ydl_opts['cookiefile'] = cookies_path
+        
     mp3_path = os.path.join(temp_dir, f"{unique_id}.mp3")
     
     try:
