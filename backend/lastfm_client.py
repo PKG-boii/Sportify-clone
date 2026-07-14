@@ -18,10 +18,16 @@ def _get(params: dict) -> dict:
     return response.json()
 
 def search_tracks(query: str, limit: int = 8) -> list[dict]:
-    
     data = _get({"method": "track.search", "track": query, "limit": limit})
     matches = data.get("results", {}).get("trackmatches", {}).get("track", [])
-    return [{"title": t["name"], "artist": t["artist"]} for t in matches]
+    results = [{"title": t["name"], "artist": t["artist"]} for t in matches]
+
+    if not results:
+        # Last.fm found nothing — likely a typo. Fall back to MusicBrainz's
+        # fuzzy search, which is far more typo-tolerant.
+        results = musicbrainz_fuzzy_search(query, limit)
+
+    return results
 
 def get_similar_tracks(artist: str, track: str, limit: int = 15) -> list[dict]:
     
@@ -90,3 +96,41 @@ def rerank_by_tags(seed_artist: str, seed_track: str, candidates: list[dict]) ->
     # Highest blended score first
     scored.sort(key=lambda t: t["final_score"], reverse=True)
     return scored
+
+def musicbrainz_fuzzy_search(query: str, limit: int = 8) -> list[dict]:
+    """
+    Fallback search using MusicBrainz's fuzzy-matching search index.
+    Only called when Last.fm's own search returns nothing — MusicBrainz's
+    '~' operator tolerates spelling mistakes far better than a plain
+    text-match search does.
+    """
+    # Lucene fuzzy syntax: appending ~ to a word matches it within an
+    # edit distance of ~2 characters. We fuzzy-ify every word in the query.
+    fuzzy_query = " ".join(f"{word}~" for word in query.split())
+
+    headers = {
+        # MusicBrainz requires a descriptive User-Agent identifying your app —
+        # requests without one get rejected or rate-limited harder.
+        "User-Agent": "SonarMusicRecommender/1.0 ( youremail@example.com )"
+    }
+    params = {
+        "query": fuzzy_query,
+        "fmt": "json",
+        "limit": limit,
+    }
+
+    response = requests.get(
+        "https://musicbrainz.org/ws/2/recording/",
+        params=params,
+        headers=headers,
+        timeout=10,
+    )
+    response.raise_for_status()
+    data = response.json()
+
+    results = []
+    for recording in data.get("recordings", []):
+        artist_credit = recording.get("artist-credit", [])
+        artist = artist_credit[0]["name"] if artist_credit else "Unknown"
+        results.append({"title": recording.get("title"), "artist": artist})
+    return results
