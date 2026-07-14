@@ -102,15 +102,25 @@ function renderSearchResults(tracks) {
         </div>
       </div>
       <div class="card-actions">
-        <button data-artist="${escapeHTML(track.artist)}" data-track="${escapeHTML(track.title)}">
+        <button class="recommend-btn" data-artist="${escapeHTML(track.artist)}" data-track="${escapeHTML(track.title)}">
           Get recommendations
+        </button>
+        <button class="download-btn">
+          Download MP3
         </button>
       </div>
     `;
-    card.querySelector("button").addEventListener("click", (e) => {
+
+    card.querySelector(".recommend-btn").addEventListener("click", (e) => {
       const { artist, track: trackName } = e.target.dataset;
       handleGetRecommendations(artist, trackName);
     });
+
+    const downloadBtn = card.querySelector(".download-btn");
+    downloadBtn.addEventListener("click", () => {
+      handleDownload(downloadBtn, track.artist, track.title);
+    });
+
     searchResults.appendChild(card);
   });
 }
