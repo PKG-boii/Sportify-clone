@@ -77,14 +77,17 @@ def diagnose_cookies():
             # Count lines with 7 fields
             seven_fields_count = 0
             for line in norm_lines:
-                if not line.strip().startswith("#") and len(line.split("\t")) == 7:
+                clean_line = line.strip()
+                if clean_line.startswith("#HttpOnly_"):
+                    clean_line = clean_line[10:]
+                if not clean_line.startswith("#") and len(clean_line.split("\t")) == 7:
                     seven_fields_count += 1
             report["normalized_lines_with_7_tab_fields"] = seven_fields_count
             
         except Exception as norm_err:
             report["normalization_error"] = str(norm_err)
             
-    # Try running a test download with the current configurations
+    # Try running a test download with a strict timeout to avoid Gunicorn 502 killing the worker
     try:
         test_dir = os.path.join(os.path.dirname(__file__), "temp_downloads")
         os.makedirs(test_dir, exist_ok=True)
@@ -94,6 +97,7 @@ def diagnose_cookies():
             'format': 'bestaudio/best',
             'quiet': True,
             'no_warnings': True,
+            'socket_timeout': 8,  # strict timeout
         }
         
         if cookie_env:

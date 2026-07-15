@@ -10,16 +10,22 @@ def normalize_netscape_cookies(content: str) -> str:
         line_strip = line.strip()
         if not line_strip:
             continue
-        if line_strip.startswith("#"):
+            
+        # Standard comments (but not HttpOnly lines)
+        if line_strip.startswith("#") and not line_strip.startswith("#HttpOnly_"):
             if "Netscape HTTP Cookie File" in line_strip:
                 has_header = True
             lines.append(line_strip)
             continue
             
+        is_http_only = line_strip.startswith("#HttpOnly_")
+        core_line = line_strip[10:] if is_http_only else line_strip
+        
         # Split by whitespace (in case tabs got converted to spaces)
-        fields = line_strip.split()
+        fields = core_line.split()
         if len(fields) == 7:
-            lines.append("\t".join(fields))
+            rebuilt = "\t".join(fields)
+            lines.append(f"#HttpOnly_{rebuilt}" if is_http_only else rebuilt)
         else:
             lines.append(line_strip)
             
