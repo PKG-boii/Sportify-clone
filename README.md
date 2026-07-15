@@ -89,7 +89,12 @@ I designed the interface to feel like tuning into radio signals.
    Create a `.env` file inside the `backend/` directory:
    ```env
    LASTFM_API_KEY=your_lastfm_key_here
-   YOUTUBE_COOKIES=your_optional_netscape_cookies_here
+   
+   # For local dev, bypass YouTube bot checks by extracting cookies from your local browser:
+   YOUTUBE_COOKIES_FROM_BROWSER=chrome  # Options: chrome, edge, firefox, brave, safari, opera
+   
+   # Alternatively (or for production/cloud deployment), paste raw Netscape format cookies:
+   # YOUTUBE_COOKIES=your_netscape_cookies_here
    ```
 
 3. **Install & Run:**

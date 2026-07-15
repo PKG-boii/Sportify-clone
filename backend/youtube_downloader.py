@@ -31,8 +31,10 @@ def download_audio_as_mp3(artist: str, track: str) -> tuple[bytes, str]:
         'no_warnings': True,
     }
     
-    # Bypass YouTube bot detection by using Netscape format cookies from environment
+    # Bypass YouTube bot detection by using Netscape format cookies or local browser cookies
     cookies_content = os.environ.get("YOUTUBE_COOKIES", "").strip()
+    browser_name = os.environ.get("YOUTUBE_COOKIES_FROM_BROWSER", "").strip()
+    
     if cookies_content:
         # Netscape format requires a specific header line to be recognized by yt-dlp
         if not cookies_content.startswith("# Netscape"):
@@ -42,6 +44,9 @@ def download_audio_as_mp3(artist: str, track: str) -> tuple[bytes, str]:
         with open(cookies_path, 'w', encoding='utf-8') as cf:
             cf.write(cookies_content)
         ydl_opts['cookiefile'] = cookies_path
+    elif browser_name:
+        # Extract cookies from a local browser (e.g. 'chrome', 'firefox', 'edge')
+        ydl_opts['cookiesfrombrowser'] = browser_name
         
     mp3_path = os.path.join(temp_dir, f"{unique_id}.mp3")
     
