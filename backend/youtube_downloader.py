@@ -2,6 +2,33 @@ import os
 import uuid
 import yt_dlp
 
+def normalize_netscape_cookies(content: str) -> str:
+    lines = []
+    has_header = False
+    
+    for line in content.splitlines():
+        line_strip = line.strip()
+        if not line_strip:
+            continue
+        if line_strip.startswith("#"):
+            if "Netscape HTTP Cookie File" in line_strip:
+                has_header = True
+            lines.append(line_strip)
+            continue
+            
+        # Split by whitespace (in case tabs got converted to spaces)
+        fields = line_strip.split()
+        if len(fields) == 7:
+            lines.append("\t".join(fields))
+        else:
+            lines.append(line_strip)
+            
+    if not has_header:
+        lines.insert(0, "# Netscape HTTP Cookie File")
+        
+    return "\n".join(lines)
+
+
 def download_audio_as_mp3(artist: str, track: str) -> tuple[bytes, str]:
     """
     Search YouTube for the track and artist, download the audio, convert it to MP3,
@@ -36,9 +63,8 @@ def download_audio_as_mp3(artist: str, track: str) -> tuple[bytes, str]:
     browser_name = os.environ.get("YOUTUBE_COOKIES_FROM_BROWSER", "").strip()
     
     if cookies_content:
-        # Netscape format requires a specific header line to be recognized by yt-dlp
-        if not cookies_content.startswith("# Netscape"):
-            cookies_content = "# Netscape HTTP Cookie File\n" + cookies_content
+        # Normalize the cookie text structure before saving
+        cookies_content = normalize_netscape_cookies(cookies_content)
             
         cookies_path = os.path.join(temp_dir, f"{unique_id}_cookies.txt")
         with open(cookies_path, 'w', encoding='utf-8') as cf:
