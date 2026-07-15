@@ -76,6 +76,7 @@ I designed the interface to feel like tuning into radio signals.
 
 ### Prerequisites
 * **Python 3.10+**
+* **Node.js** (Required by `yt-dlp` as a JavaScript runtime for YouTube signature decryption. If missing, downloads will fail with "Requested format is not available".)
 * **FFmpeg** (Ensure `ffmpeg` is installed on your machine and accessible in your shell's `PATH`)
 
 ### Steps

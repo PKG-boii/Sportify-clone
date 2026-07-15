@@ -1,8 +1,8 @@
 FROM python:3.11-slim
 
-# Install system dependencies (FFmpeg is required by yt-dlp to convert audio to MP3)
+# Install system dependencies (FFmpeg is required by yt-dlp to convert audio to MP3, Node.js is required for YouTube signature decryption)
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg && \
+    apt-get install -y --no-install-recommends ffmpeg nodejs && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app

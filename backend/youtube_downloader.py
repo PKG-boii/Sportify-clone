@@ -46,7 +46,8 @@ def download_audio_as_mp3(artist: str, track: str) -> tuple[bytes, str]:
         ydl_opts['cookiefile'] = cookies_path
     elif browser_name:
         # Extract cookies from a local browser (e.g. 'chrome', 'firefox', 'edge')
-        ydl_opts['cookiesfrombrowser'] = browser_name
+        # Wrapped in a tuple to prevent yt-dlp from unpacking the string as individual characters
+        ydl_opts['cookiesfrombrowser'] = (browser_name,)
         
     mp3_path = os.path.join(temp_dir, f"{unique_id}.mp3")
     
