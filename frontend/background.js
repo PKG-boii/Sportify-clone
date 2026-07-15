@@ -224,16 +224,6 @@ function addRing(x, y, color) {
 window.addEventListener("mousemove", (e) => {
   pointer.x = e.clientX;
   pointer.y = e.clientY;
-
-  const now = Date.now();
-  const throttleInterval = activityLevel > 1.5 ? 140 : 250;
-  if (now - lastRingTime > throttleInterval) {
-    const ringColor = activityLevel > 1.5 
-      ? `rgba(46, 196, 182, 0.35)` // Teal pulse on active operations
-      : `rgba(255, 159, 28, 0.25)`; // Amber pulse on rest state
-    addRing(e.clientX, e.clientY, ringColor);
-    lastRingTime = now;
-  }
 });
 
 window.addEventListener("mouseleave", () => {
