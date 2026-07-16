@@ -62,6 +62,8 @@ def download_audio_as_mp3(artist: str, track: str) -> tuple[bytes, str]:
         'noplaylist': True,
         'quiet': True,
         'no_warnings': True,
+        'js_runtimes': {'node': {}},
+        'remote_components': ['ejs:github'],
     }
     
     # Bypass YouTube bot detection by using Netscape format cookies or local browser cookies

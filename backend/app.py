@@ -98,6 +98,8 @@ def diagnose_cookies():
             'quiet': True,
             'no_warnings': True,
             'socket_timeout': 8,  # strict timeout
+            'js_runtimes': {'node': {}},
+            'remote_components': ['ejs:github'],
         }
         
         if cookie_env:
