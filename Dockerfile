@@ -17,5 +17,8 @@ COPY . .
 # Flask default port
 EXPOSE 5000
 
-# Start production server running Flask from the backend directory, binding to the PORT environment variable if set
-CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-5000} --chdir backend app:app"]
+# Set Python to run in unbuffered mode to ensure logs are printed immediately
+ENV PYTHONUNBUFFERED=1
+
+# Start production server running Flask from the backend directory, binding to the PORT environment variable
+CMD gunicorn --bind 0.0.0.0:$PORT --chdir backend app:app
