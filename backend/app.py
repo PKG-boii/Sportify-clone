@@ -62,11 +62,12 @@ def diagnose_cookies():
         masked_lines = []
         for i, line in enumerate(lines[:5]):
             parts = line.split()
+            tabs_count = line.count('\t')
             if len(parts) >= 6:
                 masked_parts = parts[:6] + ["***MASKED***"]
-                masked_lines.append(f"Line {i+1}: {' '.join(masked_parts)} (fields: {len(parts)}, tabs: {line.count('\t')})")
+                masked_lines.append(f"Line {i+1}: {' '.join(masked_parts)} (fields: {len(parts)}, tabs: {tabs_count})")
             else:
-                masked_lines.append(f"Line {i+1}: {line[:30]}... (fields: {len(parts)}, tabs: {line.count('\t')})")
+                masked_lines.append(f"Line {i+1}: {line[:30]}... (fields: {len(parts)}, tabs: {tabs_count})")
         report["first_5_lines_preview"] = masked_lines
         
         try:
