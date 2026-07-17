@@ -20,5 +20,5 @@ EXPOSE 5000
 # Set Python to run in unbuffered mode to ensure logs are printed immediately
 ENV PYTHONUNBUFFERED=1
 
-# Start production server running Flask from the backend directory, binding to the PORT environment variable
-CMD gunicorn --bind 0.0.0.0:$PORT --chdir backend app:app
+# Start production server running Flask from the backend directory, binding to port 5000 to match EXPOSE 5000
+CMD gunicorn --bind 0.0.0.0:5000 --chdir backend app:app
