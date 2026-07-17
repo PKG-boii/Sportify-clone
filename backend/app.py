@@ -99,6 +99,7 @@ def diagnose_cookies():
             'quiet': True,
             'no_warnings': True,
             'socket_timeout': 8,  # strict timeout
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'js_runtimes': {'node': {}},
             'remote_components': ['ejs:github'],
         }
